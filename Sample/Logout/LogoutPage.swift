@@ -11,11 +11,11 @@ import UIKit
 
 fileprivate let logoutPageIdentifier = "logoutPageIdentifier"
 
-class LogoutPage: PageFactory, StatefulPage {
+class LogoutPage: StatefulPage {
     private var authenticatorState: AuthenicatorState?
     private var uuid: UUID?
 
-    // MARK: PageFactory
+    // MARK: Page
 
     static func createPage() -> Page {
         return LogoutPage()

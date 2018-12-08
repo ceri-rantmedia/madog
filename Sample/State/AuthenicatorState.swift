@@ -11,16 +11,14 @@ import Madog
 
 let authenicatorStateName = "authenicatorStateName"
 
-class AuthenicatorState: StateFactory, State {
+class AuthenicatorState: State {
     let authenticator = Authenticator()
 
-    // MARK: StateFactory
+    // MARK: State
 
     static func createState() -> State {
         return AuthenicatorState()
     }
-
-    // MARK: State
 
     let name = authenicatorStateName
 }

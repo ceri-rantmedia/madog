@@ -10,4 +10,6 @@ import Foundation
 
 public protocol State {
     var name: String {get}
+
+    static func createState() -> State
 }

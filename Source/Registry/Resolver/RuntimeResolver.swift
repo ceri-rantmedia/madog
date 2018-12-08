@@ -13,8 +13,8 @@ import Foundation
 public final class RuntimeResolver: PageResolver, StateResolver {
     private let bundle: Bundle
 
-    private var loadedPageFactories = [PageFactory.Type]()
-    private var loadedStateFactories = [StateFactory.Type]()
+    private var loadedPageTypes = [Page.Type]()
+    private var loadedStateTypes = [State.Type]()
 
     convenience public init() {
         self.init(bundle: Bundle.main)
@@ -28,14 +28,14 @@ public final class RuntimeResolver: PageResolver, StateResolver {
 
     // MARK: PageResolver
 
-    public func pageFactoryTypes() -> [PageFactory.Type] {
-        return loadedPageFactories
+    public func pageTypes() -> [Page.Type] {
+        return loadedPageTypes
     }
 
     // MARK: StateResolver
 
-    public func stateFactoryTypes() -> [StateFactory.Type] {
-        return loadedStateFactories
+    public func stateTypes() -> [State.Type] {
+        return loadedStateTypes
     }
 
     // MARK: Private
@@ -48,11 +48,11 @@ public final class RuntimeResolver: PageResolver, StateResolver {
                 for i in 0 ..< classCount {
                     let className = classNames[Int(i)]
                     let name = String.init(cString: className)
-                    if let cls = NSClassFromString(name) as? PageFactory.Type {
-                        loadedPageFactories.append(cls)
+                    if let cls = NSClassFromString(name) as? Page.Type {
+                        loadedPageTypes.append(cls)
                     }
-                    if let cls = NSClassFromString(name) as? StateFactory.Type {
-                        loadedStateFactories.append(cls)
+                    if let cls = NSClassFromString(name) as? State.Type {
+                        loadedStateTypes.append(cls)
                     }
                 }
             }
@@ -60,8 +60,8 @@ public final class RuntimeResolver: PageResolver, StateResolver {
             free(classNames);
 
             // Sort factories alphabetically by class name
-            loadedPageFactories.sort { String(describing: $0) < String(describing: $1) }
-            loadedStateFactories.sort { String(describing: $0) < String(describing: $1) }
+            loadedPageTypes.sort { String(describing: $0) < String(describing: $1) }
+            loadedStateTypes.sort { String(describing: $0) < String(describing: $1) }
         }
     }
 }

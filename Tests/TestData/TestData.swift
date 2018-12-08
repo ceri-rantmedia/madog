@@ -1,66 +1,66 @@
 import Foundation
 import Madog
 
-class TestPage: Page {
-    var registered = false, unregistered = false
-    func register(with registry: ViewControllerRegistry) {
-        registered = true
-    }
-    func unregister(from registry: ViewControllerRegistry) {
-        unregistered = true
-    }
+protocol TestPageProtocol {
+    var registered: Bool {get}
+    var unregistered: Bool {get}
 }
 
-class TestStatefulPage: TestPage, StatefulPage {
-    var capturedState: [String:State]? = nil
-    func configure(with state: [String:State]) {
-        capturedState = state
-    }
-}
-
-class TestState: State {
-    let name = String(describing: TestState.self)
-}
-
-class TestPageFactory: PageFactory {
+class TestPage: Page, TestPageProtocol {
     static var created = false
+    var registered = false, unregistered = false
+
     static func createPage() -> Page {
         created = true
         return TestPage()
     }
+
+    func register(with registry: ViewControllerRegistry) { registered = true }
+    func unregister(from registry: ViewControllerRegistry) { unregistered = true }
 }
 
-class TestStatefulPageFactory: PageFactory {
+class TestStatefulPage: StatefulPage, TestPageProtocol {
     static var created = false
+    var capturedState: [String:State]? = nil
+    var registered = false, unregistered = false
+
     static func createPage() -> Page {
         created = true
         return TestStatefulPage()
     }
+
+    func configure(with state: [String:State]) { capturedState = state }
+    func register(with registry: ViewControllerRegistry) { registered = true }
+    func unregister(from registry: ViewControllerRegistry) { unregistered = true }
 }
 
-class TestStateFactory: StateFactory {
+class TestState: State {
     static var created = false
+    let name = String(describing: TestState.self)
+
     static func createState() -> State {
         created = true
         return TestState()
     }
 }
 
-class TestPageAndState: TestPage, State {
-    let name = String(describing: TestState.self)
-}
-
-
-class TestPageAndStateFactory: PageFactory, StateFactory {
+class TestPageAndState: Page, State, TestPageProtocol {
+    private static let instance = TestPageAndState()
     static var createdPage = false
+    static var createdState = false
+    let name = String(describing: TestState.self)
+    var registered = false, unregistered = false
+
     static func createPage() -> Page {
         createdPage = true
-        return TestPage()
+        return instance
     }
 
-    static var createdState = false
     static func createState() -> State {
         createdState = true
-        return TestState()
+        return instance
     }
+
+    func register(with registry: ViewControllerRegistry) { registered = true }
+    func unregister(from registry: ViewControllerRegistry) { unregistered = true }
 }

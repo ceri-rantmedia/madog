@@ -14,18 +14,18 @@ internal class PageRegistrar {
     internal var pages = [Page]()
 
     internal func loadState(stateResolver: StateResolver) {
-        let stateFactoryTypes = stateResolver.stateFactoryTypes()
-        for stateFactoryType in stateFactoryTypes {
-            let state = stateFactoryType.createState()
+        let stateTypes = stateResolver.stateTypes()
+        for stateType in stateTypes {
+            let state = stateType.createState()
             let name = state.name
             states[name] = state
         }
     }
 
     internal func registerPages(with registry: ViewControllerRegistry, pageResolver: PageResolver) {
-        let pageFactoryTypes = pageResolver.pageFactoryTypes()
-        for pageFactoryType in pageFactoryTypes {
-            let page = pageFactoryType.createPage()
+        let pageTypes = pageResolver.pageTypes()
+        for pageType in pageTypes {
+            let page = pageType.createPage()
             page.register(with: registry)
             if let statefulPage = page as? StatefulPage {
                 statefulPage.configure(with: states)

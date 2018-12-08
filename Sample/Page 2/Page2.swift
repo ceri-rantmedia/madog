@@ -11,11 +11,11 @@ import UIKit
 
 fileprivate let page2Identifier = "page2Identifier"
 
-class Page2: PageFactory, StatefulPage {
+class Page2: StatefulPage {
     private var state1: State1?
     private var uuid: UUID?
 
-    // MARK: PageFactory
+    // MARK: Page
 
     static func createPage() -> Page {
         return Page2()
