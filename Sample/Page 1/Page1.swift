@@ -11,11 +11,11 @@ import UIKit
 
 fileprivate let page1Identifier = "page1Identifier"
 
-class Page1Factory: PageFactory<ResourceLocator> {
+class Page1Factory: PageFactory {
 
     // MARK: PageFactory
 
-    static func createPage() -> AnyPage<ResourceLocator> {
+    func createPage() -> AnyPage<ResourceLocator> {
         return AnyPage<ResourceLocator>(Page1())
     }
 }

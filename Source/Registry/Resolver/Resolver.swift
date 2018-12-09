@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// Implementations of Resolver should return an array of all PageFactory and StateFactory types.
+/// Implementations of Resolver should return an array of all PageFactory and StateFactory instances.
 ///
 /// At the moment, the only implementation is the RuntimeResolver which uses Runtime magic to find all loaded classes
 /// that implement PageFactory and StateFactory.
@@ -21,24 +21,24 @@ import UIKit
 public protocol Resolver {
     associatedtype Token
 
-    func pageFactoryTypes() -> [PageFactory<Token>.Type]
-    func stateFactoryTypes() -> [StateFactory.Type]
+    func pageFactories() -> [AnyPageFactory<Token>]
+    func stateFactories() -> [StateFactory]
 }
 
 public class AnyResolver<Token>: Resolver {
-    private let _pageFactoryTypes: () -> [PageFactory<Token>.Type]
-    private let _stateFactoryTypes: () -> [StateFactory.Type]
+    private let _pageFactories: () -> [AnyPageFactory<Token>]
+    private let _stateFactories: () -> [StateFactory]
 
     public init<R: Resolver>(_ resolver: R) where R.Token == Token {
-        _pageFactoryTypes = resolver.pageFactoryTypes
-        _stateFactoryTypes = resolver.stateFactoryTypes
+        _pageFactories = resolver.pageFactories
+        _stateFactories = resolver.stateFactories
     }
 
-    public func pageFactoryTypes() -> [PageFactory<Token>.Type] {
-        return _pageFactoryTypes()
+    public func pageFactories() -> [AnyPageFactory<Token>] {
+        return _pageFactories()
     }
 
-    public func stateFactoryTypes() -> [StateFactory.Type] {
-        return _stateFactoryTypes()
+    public func stateFactories() -> [StateFactory] {
+        return _stateFactories()
     }
 }

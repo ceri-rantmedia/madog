@@ -11,11 +11,11 @@ import UIKit
 
 fileprivate let loginPageIdentifier = "loginPageIdentifier"
 
-class LoginPageFactory: PageFactory<ResourceLocator> {
+class LoginPageFactory: PageFactory {
 
     // MARK: PageFactory
 
-    static func createPage() -> AnyPage<ResourceLocator> {
+    func createPage() -> AnyPage<ResourceLocator> {
         return AnyPage<ResourceLocator>(LoginPage())
     }
 }
@@ -23,7 +23,7 @@ class LoginPageFactory: PageFactory<ResourceLocator> {
 class LoginPage: Page {
     typealias Token = ResourceLocator
 
-    private var authenticatorState: AuthenicatorState?
+    private var authenticatorState: AuthenticatorState?
     private var uuid: UUID?
 
     // MARK: Page
@@ -41,7 +41,7 @@ class LoginPage: Page {
     }
 
     func configure(with state: [String : State]) {
-        authenticatorState = state[authenicatorStateName] as? AuthenicatorState
+        authenticatorState = state[authenticatorStateName] as? AuthenticatorState
     }
 
     // MARK: Private

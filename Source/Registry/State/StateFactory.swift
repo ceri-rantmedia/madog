@@ -9,5 +9,5 @@
 import Foundation
 
 public protocol StateFactory {
-    static func createState() -> State
+    func createState() -> State
 }
