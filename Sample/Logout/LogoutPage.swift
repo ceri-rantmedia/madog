@@ -11,15 +11,20 @@ import UIKit
 
 fileprivate let logoutPageIdentifier = "logoutPageIdentifier"
 
-class LogoutPage: PageFactory, StatefulPage {
-    private var authenticatorState: AuthenicatorState?
-    private var uuid: UUID?
+class LogoutPageFactory: PageFactory<ResourceLocator> {
 
     // MARK: PageFactory
 
-    static func createPage() -> Page {
-        return LogoutPage()
+    static func createPage() -> AnyPage<ResourceLocator> {
+        return AnyPage<ResourceLocator>(LogoutPage())
     }
+}
+
+class LogoutPage: Page {
+    typealias Token = ResourceLocator
+
+    private var authenticatorState: AuthenicatorState?
+    private var uuid: UUID?
 
     // MARK: StatefulPage1
 

@@ -11,23 +11,26 @@ import UIKit
 
 fileprivate let loginPageIdentifier = "loginPageIdentifier"
 
-class LoginPage: PageFactory, StatefulPage {
-    private var authenticatorState: AuthenicatorState?
-    private var uuid: UUID?
+class LoginPageFactory: PageFactory<ResourceLocator> {
 
     // MARK: PageFactory
 
-    static func createPage() -> Page {
-        return LoginPage()
+    static func createPage() -> AnyPage<ResourceLocator> {
+        return AnyPage<ResourceLocator>(LoginPage())
     }
+}
 
-    // MARK: StatefulPage
+class LoginPage: Page {
+    typealias Token = ResourceLocator
+
+    private var authenticatorState: AuthenicatorState?
+    private var uuid: UUID?
+
+    // MARK: Page
 
     func configure(with state: [String : State]) {
         authenticatorState = state[authenicatorStateName] as? AuthenicatorState
     }
-
-    // MARK: Page
 
     func register(with registry: ViewControllerRegistry) {
         uuid = registry.add(registryFunction: createViewController(token:context:))

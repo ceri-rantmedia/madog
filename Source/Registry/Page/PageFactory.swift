@@ -8,6 +8,14 @@
 
 import Foundation
 
-public protocol PageFactory {
-    static func createPage() -> Page
+open class PageFactory<Token> {
+    static func createPage() -> AnyPage<Token> {
+        return AnyPage(DummyPage())
+    }
+}
+
+private class DummyPage<Token>: Page {
+    func configure(with state: [String : State]) {}
+    func register(with registry: ViewControllerRegistry) {}
+    func unregister(from registry: ViewControllerRegistry) {}
 }

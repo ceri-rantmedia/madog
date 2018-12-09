@@ -10,11 +10,11 @@ import Foundation
 
 /// An implementation of PageResolver and StateResolver which uses objc-runtime magic to find all loaded classes that
 /// implement Page and State respectively.
-public final class RuntimeResolver: PageResolver, StateResolver {
+public final class RuntimeResolver<Token>: Resolver {
     private let bundle: Bundle
 
-    private var loadedPageFactories = [PageFactory.Type]()
-    private var loadedStateFactories = [StateFactory.Type]()
+    private var loadedPageFactoryTypes = [PageFactory<Token>.Type]()
+    private var loadedStateFactoryTypes = [StateFactory.Type]()
 
     convenience public init() {
         self.init(bundle: Bundle.main)
@@ -28,14 +28,14 @@ public final class RuntimeResolver: PageResolver, StateResolver {
 
     // MARK: PageResolver
 
-    public func pageFactoryTypes() -> [PageFactory.Type] {
-        return loadedPageFactories
+    public func pageFactoryTypes() -> [PageFactory<Token>.Type] {
+        return loadedPageFactoryTypes
     }
 
     // MARK: StateResolver
 
     public func stateFactoryTypes() -> [StateFactory.Type] {
-        return loadedStateFactories
+        return loadedStateFactoryTypes
     }
 
     // MARK: Private
@@ -48,11 +48,14 @@ public final class RuntimeResolver: PageResolver, StateResolver {
                 for i in 0 ..< classCount {
                     let className = classNames[Int(i)]
                     let name = String.init(cString: className)
-                    if let cls = NSClassFromString(name) as? PageFactory.Type {
-                        loadedPageFactories.append(cls)
+                    print(name)
+                    if let cls = NSClassFromString(name) as? PageFactory<Token>.Type {
+                        print("Factory LOADED")
+                        loadedPageFactoryTypes.append(cls)
                     }
                     if let cls = NSClassFromString(name) as? StateFactory.Type {
-                        loadedStateFactories.append(cls)
+                        print("State LOADED")
+                        loadedStateFactoryTypes.append(cls)
                     }
                 }
             }
@@ -60,8 +63,8 @@ public final class RuntimeResolver: PageResolver, StateResolver {
             free(classNames);
 
             // Sort factories alphabetically by class name
-            loadedPageFactories.sort { String(describing: $0) < String(describing: $1) }
-            loadedStateFactories.sort { String(describing: $0) < String(describing: $1) }
+            loadedPageFactoryTypes.sort { String(describing: $0) < String(describing: $1) }
+            loadedStateFactoryTypes.sort { String(describing: $0) < String(describing: $1) }
         }
     }
 }

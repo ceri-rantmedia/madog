@@ -11,23 +11,26 @@ import UIKit
 
 fileprivate let page2Identifier = "page2Identifier"
 
-class Page2: PageFactory, StatefulPage {
-    private var state1: State1?
-    private var uuid: UUID?
+class Page2Factory: PageFactory<ResourceLocator> {
 
     // MARK: PageFactory
 
-    static func createPage() -> Page {
-        return Page2()
+    static func createPage() -> AnyPage<ResourceLocator> {
+        return AnyPage<ResourceLocator>(Page2())
     }
+}
 
-    // MARK: StatefulPage1
+class Page2: Page {
+    typealias Token = ResourceLocator
+
+    private var state1: State1?
+    private var uuid: UUID?
+
+    // MARK: Page
 
     func configure(with state: [String : State]) {
         state1 = state[state1Name] as? State1
     }
-
-    // MARK: Page
 
     func register(with registry: ViewControllerRegistry) {
         uuid = registry.add(registryFunction: createViewController(token:context:))
