@@ -10,11 +10,16 @@ import Foundation
 
 /// A class that presents view controllers, and manages the navigation between them.
 internal class PageRegistrar {
+    private let resolver: Resolver
     internal var states = [String:State]()
     internal var pages = [Page]()
 
-    internal func loadState(stateResolver: StateResolver) {
-        let stateTypes = stateResolver.stateTypes()
+    internal init(resolver: Resolver) {
+        self.resolver = resolver
+    }
+
+    internal func loadState() {
+        let stateTypes = resolver.stateTypes()
         for stateType in stateTypes {
             let state = stateType.createState()
             let name = state.name
@@ -22,14 +27,12 @@ internal class PageRegistrar {
         }
     }
 
-    internal func registerPages(with registry: ViewControllerRegistry, pageResolver: PageResolver) {
-        let pageTypes = pageResolver.pageTypes()
+    internal func registerPages(with registry: ViewControllerRegistry) {
+        let pageTypes = resolver.pageTypes()
         for pageType in pageTypes {
             let page = pageType.createPage()
             page.register(with: registry)
-            if let statefulPage = page as? StatefulPage {
-                statefulPage.configure(with: states)
-            }
+            page.configure(with: states)
             pages.append(page)
         }
     }

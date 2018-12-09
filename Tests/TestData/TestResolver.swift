@@ -1,7 +1,7 @@
 import Foundation
 import Madog
 
-class TestResolver: PageResolver, StateResolver {
+class TestResolver: Resolver {
     private let testPageTypes: [Page.Type]
     private let testStateTypes: [State.Type]
 

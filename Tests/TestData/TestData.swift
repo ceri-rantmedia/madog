@@ -9,6 +9,7 @@ protocol TestPageProtocol {
 class TestPage: Page, TestPageProtocol {
     static var created = false
     var registered = false, unregistered = false
+    var capturedState: [String:State]? = nil
 
     static func createPage() -> Page {
         created = true
@@ -17,21 +18,7 @@ class TestPage: Page, TestPageProtocol {
 
     func register(with registry: ViewControllerRegistry) { registered = true }
     func unregister(from registry: ViewControllerRegistry) { unregistered = true }
-}
-
-class TestStatefulPage: StatefulPage, TestPageProtocol {
-    static var created = false
-    var capturedState: [String:State]? = nil
-    var registered = false, unregistered = false
-
-    static func createPage() -> Page {
-        created = true
-        return TestStatefulPage()
-    }
-
     func configure(with state: [String:State]) { capturedState = state }
-    func register(with registry: ViewControllerRegistry) { registered = true }
-    func unregister(from registry: ViewControllerRegistry) { unregistered = true }
 }
 
 class TestState: State {
@@ -48,8 +35,10 @@ class TestPageAndState: Page, State, TestPageProtocol {
     private static let instance = TestPageAndState()
     static var createdPage = false
     static var createdState = false
+
     let name = String(describing: TestState.self)
     var registered = false, unregistered = false
+    var capturedState: [String:State]? = nil
 
     static func createPage() -> Page {
         createdPage = true
@@ -63,4 +52,5 @@ class TestPageAndState: Page, State, TestPageProtocol {
 
     func register(with registry: ViewControllerRegistry) { registered = true }
     func unregister(from registry: ViewControllerRegistry) { unregistered = true }
+    func configure(with state: [String:State]) { capturedState = state }
 }

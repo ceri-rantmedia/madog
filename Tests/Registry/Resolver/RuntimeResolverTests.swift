@@ -20,7 +20,7 @@ class RuntimeResolverTests: XCTestCase {
 
     func testNumberOfPageTypes() {
         // Only classes are considered at the moment
-        XCTAssertEqual(resolver.pageTypes().count, 3)
+        XCTAssertEqual(resolver.pageTypes().count, 2)
     }
 
     func testNumberOfStateTypes() {

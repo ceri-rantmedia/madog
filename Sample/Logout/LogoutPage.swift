@@ -11,7 +11,7 @@ import UIKit
 
 fileprivate let logoutPageIdentifier = "logoutPageIdentifier"
 
-class LogoutPage: StatefulPage {
+class LogoutPage: Page {
     private var authenticatorState: AuthenicatorState?
     private var uuid: UUID?
 
@@ -20,14 +20,6 @@ class LogoutPage: StatefulPage {
     static func createPage() -> Page {
         return LogoutPage()
     }
-
-    // MARK: StatefulPage1
-
-    func configure(with state: [String : State]) {
-        authenticatorState = state[authenicatorStateName] as? AuthenicatorState
-    }
-
-    // MARK: Page
 
     func register(with registry: ViewControllerRegistry) {
         uuid = registry.add(registryFunction: createViewController(token:context:))
@@ -39,6 +31,10 @@ class LogoutPage: StatefulPage {
         }
 
         registry.removeRegistryFunction(uuid: uuid)
+    }
+
+    func configure(with state: [String : State]) {
+        authenticatorState = state[authenicatorStateName] as? AuthenicatorState
     }
 
     // MARK: Private
