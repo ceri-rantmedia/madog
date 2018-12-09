@@ -11,15 +11,6 @@ import Madog
 
 let state1Name = "state1Name"
 
-class State1Factory: StateFactory {
-
-    // MARK: StateFactory
-
-    func createState() -> State {
-        return State1()
-    }
-}
-
 class State1: State {
 
     // MARK: State

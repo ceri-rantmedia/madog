@@ -10,19 +10,18 @@ import Foundation
 import Madog
 
 class SampleResolver: Resolver {
-    func pageFactories() -> [AnyPageFactory<ResourceLocator>] {
+    func pageCreationFunctions() -> [() -> AnyPage<ResourceLocator>] {
         return [
-            AnyPageFactory(LoginPageFactory()),
-            AnyPageFactory(Page1Factory()),
-            AnyPageFactory(Page2Factory()),
-            AnyPageFactory(LogoutPageFactory())
+            { return AnyPage(LoginPage()) },
+            { return AnyPage(Page1()) },
+            { return AnyPage(Page2()) },
+            { return AnyPage(LogoutPage()) }
         ]
     }
-
-    func stateFactories() -> [StateFactory] {
+    func stateCreationFunctions() -> [() -> State] {
         return [
-            State1Factory(),
-            AuthenticatorStateFactory()
+            { return State1() },
+            { return AuthenticatorState() }
         ]
     }
 }

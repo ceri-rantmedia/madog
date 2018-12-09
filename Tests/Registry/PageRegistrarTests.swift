@@ -5,7 +5,7 @@ import XCTest
 class PageRegistrarTests: XCTestCase {
 
     // MARK: CUT
-    private var pageRegistrar: PageRegistrar!
+    private var pageRegistrar: PageRegistrar<String>!
 
     // MARK: Test Data
     private var resolver: TestResolver!
@@ -13,11 +13,12 @@ class PageRegistrarTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let testPageFactoryTypes: [PageFactory.Type] = [TestPageFactory.self, TestPageAndStateFactory.self]
-        let testStateFactoryTypes: [StateFactory.Type] = [TestStateFactory.self, TestPageAndStateFactory.self]
-        resolver = TestResolver(testPageFactoryTypes: testPageFactoryTypes, testStateFactoryTypes: testStateFactoryTypes)
+        let testPageCreationFunctions: [() -> AnyPage<String>] = [TestPageFactory.createPage, TestPageAndStateFactory.createPage]
+        let testStateCreationFunctions: [() -> State] = [TestStateFactory.createState, TestPageAndStateFactory.createState]
+        resolver = TestResolver(testPageCreationFunctions: testPageCreationFunctions,
+                                testStateCreationFunctions: testStateCreationFunctions)
         registry = ViewControllerRegistry()
-        pageRegistrar = PageRegistrar(resolver: resolver)
+        pageRegistrar = PageRegistrar(resolver: AnyResolver(resolver))
     }
 
     override func tearDown() {
@@ -49,20 +50,5 @@ class PageRegistrarTests: XCTestCase {
 
         XCTAssertTrue(TestPageFactory.created)
         XCTAssertTrue(TestPageAndStateFactory.createdPage)
-
-        for page in pageRegistrar.pages {
-            let testPage = page as! TestPage
-            XCTAssertTrue(testPage.registered)
-            XCTAssertFalse(testPage.unregistered)
-        }
-
-        pageRegistrar.unregisterPages(from: registry)
-        XCTAssertEqual(pageRegistrar.pages.count, 0)
-
-        for page in pageRegistrar.pages {
-            let testPage = page as! TestPage
-            XCTAssertTrue(testPage.registered)
-            XCTAssertTrue(testPage.unregistered)
-        }
     }
 }

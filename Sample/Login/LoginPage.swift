@@ -11,15 +11,6 @@ import UIKit
 
 fileprivate let loginPageIdentifier = "loginPageIdentifier"
 
-class LoginPageFactory: PageFactory {
-
-    // MARK: PageFactory
-
-    func createPage() -> AnyPage<ResourceLocator> {
-        return AnyPage<ResourceLocator>(LoginPage())
-    }
-}
-
 class LoginPage: Page {
     typealias Token = ResourceLocator
 

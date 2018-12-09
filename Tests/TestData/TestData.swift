@@ -2,6 +2,8 @@ import Foundation
 import Madog
 
 class TestPage: Page {
+    typealias Token = String
+
     var registered = false, unregistered = false
     var capturedState: [String:State]? = nil
     func register(with registry: ViewControllerRegistry) {
@@ -19,15 +21,15 @@ class TestState: State {
     let name = String(describing: TestState.self)
 }
 
-class TestPageFactory: PageFactory {
+class TestPageFactory {
     static var created = false
-    static func createPage() -> Page {
+    static func createPage() -> AnyPage<String> {
         created = true
-        return TestPage()
+        return AnyPage(TestPage())
     }
 }
 
-class TestStateFactory: StateFactory {
+class TestStateFactory {
     static var created = false
     static func createState() -> State {
         created = true
@@ -40,16 +42,17 @@ class TestPageAndState: TestPage, State {
 }
 
 
-class TestPageAndStateFactory: PageFactory, StateFactory {
+class TestPageAndStateFactory {
+    static let testPageAndState = TestPageAndState()
     static var createdPage = false
-    static func createPage() -> Page {
+    static func createPage() -> AnyPage<String> {
         createdPage = true
-        return TestPage()
+        return AnyPage(testPageAndState)
     }
 
     static var createdState = false
     static func createState() -> State {
         createdState = true
-        return TestState()
+        return testPageAndState
     }
 }

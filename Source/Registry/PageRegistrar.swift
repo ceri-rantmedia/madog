@@ -19,18 +19,18 @@ internal class PageRegistrar<Token> {
     }
 
     internal func loadState() {
-        let stateFactories = resolver.stateFactories()
-        for stateFactory in stateFactories {
-            let state = stateFactory.createState()
+        let stateCreationFunctions = resolver.stateCreationFunctions()
+        for stateCreationFunction in stateCreationFunctions {
+            let state = stateCreationFunction()
             let name = state.name
             states[name] = state
         }
     }
 
     internal func registerPages(with registry: ViewControllerRegistry) {
-        let pageFactories = resolver.pageFactories()
-        for pageFactory in pageFactories {
-            let page = pageFactory.createPage()
+        let pageCreationFunctions = resolver.pageCreationFunctions()
+        for pageCreationFunction in pageCreationFunctions {
+            let page = pageCreationFunction()
             page.register(with: registry)
             page.configure(with: states)
             pages.append(AnyPage(page))

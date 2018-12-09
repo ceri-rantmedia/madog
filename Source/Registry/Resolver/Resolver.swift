@@ -21,24 +21,24 @@ import UIKit
 public protocol Resolver {
     associatedtype Token
 
-    func pageFactories() -> [AnyPageFactory<Token>]
-    func stateFactories() -> [StateFactory]
+    func pageCreationFunctions() -> [() -> AnyPage<Token>]
+    func stateCreationFunctions() -> [() -> State]
 }
 
 public class AnyResolver<Token>: Resolver {
-    private let _pageFactories: () -> [AnyPageFactory<Token>]
-    private let _stateFactories: () -> [StateFactory]
+    private let _pageCreationFunctions: () -> [() -> AnyPage<Token>]
+    private let _stateCreationFunctions: () -> [() -> State]
 
     public init<R: Resolver>(_ resolver: R) where R.Token == Token {
-        _pageFactories = resolver.pageFactories
-        _stateFactories = resolver.stateFactories
+        _pageCreationFunctions = resolver.pageCreationFunctions
+        _stateCreationFunctions = resolver.stateCreationFunctions
     }
 
-    public func pageFactories() -> [AnyPageFactory<Token>] {
-        return _pageFactories()
+    public func pageCreationFunctions() -> [() -> AnyPage<Token>] {
+        return _pageCreationFunctions()
     }
 
-    public func stateFactories() -> [StateFactory] {
-        return _stateFactories()
+    public func stateCreationFunctions() -> [() -> State] {
+        return _stateCreationFunctions()
     }
 }
