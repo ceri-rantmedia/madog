@@ -13,9 +13,9 @@ import Foundation
 public protocol Page {
     associatedtype Token
 
-    func configure(with state: [String:State])
     func register(with registry: ViewControllerRegistry)
     func unregister(from registry: ViewControllerRegistry)
+    func configure(with state: [String:State])
 }
 
 public class AnyPage<Token>: Page {

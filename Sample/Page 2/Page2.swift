@@ -28,10 +28,6 @@ class Page2: Page {
 
     // MARK: Page
 
-    func configure(with state: [String : State]) {
-        state1 = state[state1Name] as? State1
-    }
-
     func register(with registry: ViewControllerRegistry) {
         uuid = registry.add(registryFunction: createViewController(token:context:))
     }
@@ -44,6 +40,10 @@ class Page2: Page {
         registry.removeRegistryFunction(uuid: uuid)
     }
 
+    func configure(with state: [String : State]) {
+        state1 = state[state1Name] as? State1
+    }
+
     // MARK: Private
 
     private func createViewController(token: Any, context: Context) -> UIViewController? {
@@ -52,7 +52,7 @@ class Page2: Page {
             rl.identifier == page2Identifier,
             let pageData = rl.pageData,
             let navigationContext = context as? ForwardBackNavigationContext else {
-            return nil
+                return nil
         }
 
         let viewController = Page2ViewController(state1: state1,

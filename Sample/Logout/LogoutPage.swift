@@ -26,12 +26,6 @@ class LogoutPage: Page {
     private var authenticatorState: AuthenicatorState?
     private var uuid: UUID?
 
-    // MARK: StatefulPage1
-
-    func configure(with state: [String : State]) {
-        authenticatorState = state[authenicatorStateName] as? AuthenicatorState
-    }
-
     // MARK: Page
 
     func register(with registry: ViewControllerRegistry) {
@@ -44,6 +38,10 @@ class LogoutPage: Page {
         }
 
         registry.removeRegistryFunction(uuid: uuid)
+    }
+
+    func configure(with state: [String : State]) {
+        authenticatorState = state[authenicatorStateName] as? AuthenicatorState
     }
 
     // MARK: Private

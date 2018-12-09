@@ -28,10 +28,6 @@ class LoginPage: Page {
 
     // MARK: Page
 
-    func configure(with state: [String : State]) {
-        authenticatorState = state[authenicatorStateName] as? AuthenicatorState
-    }
-
     func register(with registry: ViewControllerRegistry) {
         uuid = registry.add(registryFunction: createViewController(token:context:))
     }
@@ -42,6 +38,10 @@ class LoginPage: Page {
         }
 
         registry.removeRegistryFunction(uuid: uuid)
+    }
+
+    func configure(with state: [String : State]) {
+        authenticatorState = state[authenicatorStateName] as? AuthenicatorState
     }
 
     // MARK: Private

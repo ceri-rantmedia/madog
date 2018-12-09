@@ -11,15 +11,16 @@ import UIKit
 public final class Madog<Token>: MadogUIContextDelegate {
     private let registry: ViewControllerRegistry
     private let factory: MadogUIContextFactory
-    private let pageRegistrar = PageRegistrar<Token>()
+    private let pageRegistrar: PageRegistrar<Token>
 
     private var currentContextUI: MadogUIContext?
 
     public init(resolver: AnyResolver<Token>) {
         registry = ViewControllerRegistry()
         factory = MadogUIContextFactoryImplementation(registry: registry)
-        pageRegistrar.loadState(resolver: resolver)
-        pageRegistrar.registerPages(with: registry, resolver: resolver)
+        pageRegistrar = PageRegistrar<Token>(resolver: resolver)
+        pageRegistrar.loadState()
+        pageRegistrar.registerPages(with: registry)
     }
 
     deinit {

@@ -18,8 +18,6 @@ class Page1Factory: PageFactory<ResourceLocator> {
     static func createPage() -> AnyPage<ResourceLocator> {
         return AnyPage<ResourceLocator>(Page1())
     }
-
-    func something() {print("")}
 }
 
 class Page1: Page {
@@ -29,10 +27,6 @@ class Page1: Page {
     private var uuid: UUID?
 
     // MARK: Page
-
-    func configure(with state: [String : State]) {
-        state1 = state[state1Name] as? State1
-    }
 
     func register(with registry: ViewControllerRegistry) {
         uuid = registry.add(registryFunction: createViewController(token:context:))
@@ -46,6 +40,10 @@ class Page1: Page {
         registry.removeRegistryFunction(uuid: uuid)
     }
 
+    func configure(with state: [String : State]) {
+        state1 = state[state1Name] as? State1
+    }
+
     // MARK: Private
 
     private func createViewController(token: Any, context: Context) -> UIViewController? {
@@ -53,7 +51,7 @@ class Page1: Page {
             let rl = token as? ResourceLocator,
             rl.identifier == page1Identifier,
             let navigationContext = context as? ForwardBackNavigationContext else {
-            return nil
+                return nil
         }
 
         let viewController =  Page1ViewController(state1: state1, navigationContext: navigationContext)

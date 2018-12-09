@@ -8,9 +8,9 @@
 
 import UIKit
 
-/// Implementations of PageResolver should return an array of all PageFactory and StateFactory types.
+/// Implementations of Resolver should return an array of all PageFactory and StateFactory types.
 ///
-/// At the moment, the only implementation is the RuntimePageResolver which uses Runtime magic to find all loaded classes
+/// At the moment, the only implementation is the RuntimeResolver which uses Runtime magic to find all loaded classes
 /// that implement PageFactory and StateFactory.
 ///
 /// This might not be a long term solution, especially if Swift moves away from the Obj-C runtime, but it does serve as
@@ -20,6 +20,7 @@ import UIKit
 /// them via a plist.
 public protocol Resolver {
     associatedtype Token
+
     func pageFactoryTypes() -> [PageFactory<Token>.Type]
     func stateFactoryTypes() -> [StateFactory.Type]
 }
