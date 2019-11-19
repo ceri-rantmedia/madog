@@ -15,7 +15,7 @@ public protocol MadogDelegate: AnyObject {
 }
 
 public final class Madog<Token>: MadogUIContainerDelegate {
-    private let registry = Registry<Token>()
+    public let registry = Registry<Token>()
     private let registrar: Registrar<Token, Context>
     private let factory: MadogUIContainerFactory<Token>
 
